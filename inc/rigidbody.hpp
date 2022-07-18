@@ -1,26 +1,32 @@
-#include "glm/glm.hpp"
+#ifndef __RIGIDBODY_H__
+#define __RIGIDBODY_H__
 
+#include "glm/glm.hpp"
+#include<bv.hpp>
 namespace Physicc2D{
     
     //similar to 3D. this class describes the properties of a rigidbody
-    //as collider
-    class RigidBody{
+    /*Currently no collider is implemented as Boxcolliders and OBBs are the same
+	and orientation cannot be deduced from Spherecolliders, making the OBBs effectively an AABB*/
+	class RigidBody{
 
 		private:
-        glm::vec2 m_position;
         float m_mass;
 		glm::vec2 m_velocity;
 		float m_gravityScale;
         glm::vec2 m_force;
+		BoundingVolume::AABB enclosingAABB;
+		//Once I figure out how to implement more complex colliders I'll make a code for a tight-fitting OBB
+		BoundingVolume::OBB enclosingOBB;
         
         public:
 			RigidBody(float mass, const glm::vec2& velocity, float gravityScale);
 			RigidBody(const RigidBody& other) = default;
 
-			[[nodiscard]] inline glm::vec2 getPosition() const{
-				return m_position;
+			[[nodiscard]] inline glm::vec2 getCentroid() const{
+				return glm::vec2((enclosingAABB.upperbound.x + enclosingAABB.lowerbound.x)/2.0,
+								 (enclosingAABB.upperbound.y + enclosingAABB.lowerbound.y)/2.0);
 			}
-            
             [[nodiscard]] inline glm::vec2 getVelocity() const{
 				return m_velocity;
 			}
@@ -33,8 +39,20 @@ namespace Physicc2D{
 				m_gravityScale = gravityScale;
 
 			}
-            inline void setPosition(const glm::vec2& position){
-                m_position = position;
-            }
+			[[nodiscard]] inline BoundingVolume::AABB getAABB(){
+				return enclosingAABB;
+			}
+			[[nodiscard]] inline BoundingVolume::OBB getOBB(){
+				return enclosingOBB;
+			} 
+			inline void setAABB(glm::vec2& ub, glm::vec2& lb){
+				enclosingAABB.Set(lb, ub);
+			}
+			inline void setOBB(glm::vec2& ub, glm::vec2& lb, glm::vec2& ax){
+				enclosingOBB.Set(lb, ub, ax);
+			}
+
     };
 }
+
+#endif

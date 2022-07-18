@@ -1,10 +1,10 @@
+#ifndef __BV_H__
+#define __BV_H__
+
 #include "glm/glm.hpp"
 #include "glm/geometric.hpp"
 #include "glm/vec2.hpp"
 #include "glm/vec2.hpp"
-
-const float epsilon = 1e-5;
-const glm::vec2 X(1.f,0.f), Y(0.f, 1.f);
 
 namespace Physicc2D{
     
@@ -25,11 +25,12 @@ namespace Physicc2D{
                 upperbound = UB;
             }
             
-            inline bool operator==(const AABB& aabb) const{
-                //if the lowerbounds and upperbounds coincide then the AABBs are equal
-                 return (glm::distance(this->lowerbound, aabb.lowerbound) < epsilon)
-                    && (glm::distance(this->upperbound, aabb.upperbound)< epsilon);
+            
+            inline void Set(glm::vec2& LB, glm::vec2& UB, glm::vec2& ax){
+                lowerbound = LB;
+                upperbound = UB;
             }
+            /*This isn't really needed*/
 
             inline float Area() const{
                 return (upperbound.x - lowerbound.x)
@@ -71,12 +72,12 @@ namespace Physicc2D{
                 upperbound = UB;
                 axis = ax;
             }
-            inline bool operator==(const OBB& obb) const{
-                //if the lowerbounds, upperbounds, axes coincide,then they are equal
-                 return (abs(glm::length(this->lowerbound - obb.lowerbound)) < epsilon)
-                    && (abs(glm::length(this->upperbound - obb.upperbound)) < epsilon)
-                    && (abs(glm::length(this->axis - obb.axis)) < epsilon);
-                //    && (this->is_AABB == bb.is_AABB);
+
+            //The current template implementation doesn't like it when this function is missing.
+            //Ideally it should never be called
+            inline void Set(glm::vec2& LB, glm::vec2& UB){
+                lowerbound = LB;
+                upperbound = UB;
             }
 
             inline float Area() const{
@@ -88,6 +89,7 @@ namespace Physicc2D{
             }
 
             inline bool Overlaps(OBB& obb){
+                const glm::vec2 X(1.f,0.f), Y(0.f, 1.f);
                 return 
                 //first checks whether the vertices of the passed obb lie inside our obb(this)
                     (inside(obb.lowerbound)
@@ -104,13 +106,23 @@ namespace Physicc2D{
                   || obb.inside(upperbound.x - glm::dot(upperbound - lowerbound, axis)*glm::dot(axis, X),
                                    upperbound.y - glm::dot(upperbound - lowerbound, axis)*glm::dot(axis, Y)));
             }
-
-            inline OBB Enclose(const OBB& obb){
-                return *this; //work in progress
-            }
-
-            //returns whether or not a point is inside an OBB
             
+            //This should never be called 
+            inline OBB Enclose(const OBB& obb){
+                return *this;
+            }
+            
+            inline void Check(){
+                //checks if axis is misaligned
+                    if(glm::acos(glm::dot(axis, upperbound - lowerbound)/
+                            (glm::length(upperbound - lowerbound))) > 0.7854){
+                    //Rotate the axis clockwise
+                    if(axis.x < 0) axis = glm::vec2(axis.y, -axis.x);
+                    //Rotate the axis counterclockwise
+                    else axis = glm::vec2(-axis.y, axis.x);
+                }
+            }
+            //returns whether or not a point is inside an OBB
             inline bool inside(const glm::vec2& a){ 
                 //cos = glm::dot(axis, X), sin = glm::dot(axis, Y)
                 //(the angle in question is the orientation of the axis)
@@ -118,6 +130,7 @@ namespace Physicc2D{
                 //a third vertice of the OBB
                 //lowerbound.x + (upperbound.x - lowerbound.x)*cos*cos + (upperbound.y - lowerbound.y)*cos*sin,
                 //was my original implementation.
+                const glm::vec2 X(1.f,0.f), Y(0.f, 1.f);
                 glm::vec2 adj(lowerbound.x + glm::dot(upperbound - lowerbound, axis)*glm::dot(axis, X), //(upperbound.x - lowerbound.x)*cos*cos + (upperbound.y - lowerbound.y)*cos*sin,
                               lowerbound.y + glm::dot(upperbound - lowerbound, axis)*glm::dot(axis, Y));
                 return (glm::dot(a - adj, lowerbound - adj) > 0
@@ -155,7 +168,7 @@ namespace Physicc2D{
             inline void SetBV(const T& volume){
                 this->volume = volume;
             }
-            inline void SetBV(const glm::vec2& LB, const glm::vec2& UB){
+            inline void SetBV(glm::vec2& LB, glm::vec2& UB){
                 volume.Set(LB, UB);
             }
             inline void SetBV(glm::vec2& LB, glm::vec2& UB, glm::vec2& ax){
@@ -171,7 +184,7 @@ namespace Physicc2D{
             inline bool OverlapsWith(BaseBV& bv){
                 return this->volume.Overlaps(bv.volume);
             }
-
+            //this function should ideally only be called for AABBs.
             inline BaseBV EnclosingBV(const BaseBV& bv){
                 return BaseBV(this->volume.Enclose(bv.volume));
             }
@@ -179,3 +192,4 @@ namespace Physicc2D{
         };
     }
 }
+#endif

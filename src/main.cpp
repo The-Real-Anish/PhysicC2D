@@ -7,8 +7,8 @@
 int main()
 {
 	clock_t begin = clock();
-	Physicc2D::Generator<Physicc2D::BoundingVolume::OBB> gen(40000);
-	gen.Generate();
+	Physicc2D::Generator<Physicc2D::BoundingVolume::OBB> gen(800);
+	gen.Generate("OBB");
 	gen.ShowCollisions();
 	//TODO : Implement a randomized OBB generator by using rand() and srand() (done above)
 	clock_t end = clock();
