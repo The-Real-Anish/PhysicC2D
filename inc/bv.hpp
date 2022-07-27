@@ -25,12 +25,16 @@ namespace Physicc2D{
                 upperbound = UB;
             }
             
-            
             inline void Set(glm::vec2& LB, glm::vec2& UB, glm::vec2& ax){
                 lowerbound = LB;
                 upperbound = UB;
             }
             /*This isn't really needed*/
+
+            inline void SetAxis(const glm::vec2& ax){
+                if(true) ;
+            }
+            /*Neither is this*/
 
             inline float Area() const{
                 return (upperbound.x - lowerbound.x)
@@ -42,6 +46,13 @@ namespace Physicc2D{
 							&& this->upperbound.x >= aabb.lowerbound.x)
 						&& (this->lowerbound.y <= aabb.upperbound.y
 							&& this->upperbound.y >= aabb.lowerbound.y);
+            }
+
+            inline void Check(){
+                lowerbound.x = std::min(lowerbound.x, upperbound.x);
+                lowerbound.y = std::min(lowerbound.y, upperbound.y);
+                upperbound.x = std::max(lowerbound.x, upperbound.x);
+                upperbound.y = std::max(lowerbound.y, upperbound.y);
             }
 
             inline AABB Enclose(const AABB& aabb) const{
@@ -80,6 +91,10 @@ namespace Physicc2D{
                 upperbound = UB;
             }
 
+            inline void SetAxis(const glm::vec2& ax){
+                axis = ax;
+            }
+
             inline float Area() const{
                 return glm::dot(axis, upperbound - lowerbound)
                      * glm::length(glm::cross(glm::vec3(axis.x, axis.y, 0), 
@@ -114,7 +129,7 @@ namespace Physicc2D{
             
             inline void Check(){
                 //checks if axis is misaligned
-                    if(glm::acos(glm::dot(axis, upperbound - lowerbound)/
+                if(glm::acos(glm::dot(axis, upperbound - lowerbound)/
                             (glm::length(upperbound - lowerbound))) > 0.7854){
                     //Rotate the axis clockwise
                     if(axis.x < 0) axis = glm::vec2(axis.y, -axis.x);
@@ -160,7 +175,8 @@ namespace Physicc2D{
 				this->volume = {LB, UB};
 			}
             BaseBV(const glm::vec2& LB, const glm::vec2& UB, const glm::vec2& ax){
-				this->volume = {LB, UB, ax};
+                this->volume = {LB, UB};
+                this->volume.SetAxis(ax);
 			}
 
             //functions
@@ -184,6 +200,11 @@ namespace Physicc2D{
             inline bool OverlapsWith(BaseBV& bv){
                 return this->volume.Overlaps(bv.volume);
             }
+
+            inline void Correct(){
+                return volume.Check();
+            }
+
             //this function should ideally only be called for AABBs.
             inline BaseBV EnclosingBV(const BaseBV& bv){
                 return BaseBV(this->volume.Enclose(bv.volume));

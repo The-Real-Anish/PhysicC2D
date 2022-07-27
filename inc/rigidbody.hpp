@@ -45,11 +45,27 @@ namespace Physicc2D{
 			[[nodiscard]] inline BoundingVolume::OBB getOBB(){
 				return enclosingOBB;
 			} 
+			
+			inline void setAABB(BoundingVolume::AABB aabb){
+				enclosingAABB.Set(aabb.lowerbound, aabb.upperbound);
+			}
+			
 			inline void setAABB(glm::vec2& ub, glm::vec2& lb){
 				enclosingAABB.Set(lb, ub);
 			}
+
 			inline void setOBB(glm::vec2& ub, glm::vec2& lb, glm::vec2& ax){
 				enclosingOBB.Set(lb, ub, ax);
+			}
+
+			inline void setOBB(BoundingVolume::OBB obb){
+				enclosingOBB.Set(obb.lowerbound, obb.upperbound, obb.axis);
+			}
+
+			template<typename T>
+			inline void setBV(BoundingVolume::BaseBV<T>& bv){
+				if(std::is_same<T, BoundingVolume::AABB>::value) enclosingAABB.Set(bv.volume.lb, bv.volume.ub);
+				else enclosingOBB.Set(bv.volume.lb, bv.volume.ub, bv.volume.axis);
 			}
 
     };

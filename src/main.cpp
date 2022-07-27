@@ -6,12 +6,13 @@
 #include<time.h>
 int main()
 {
+	Physicc2D::Generator<Physicc2D::BoundingVolume::AABB> gen(1000);
+	gen.Generate("AABB");
 	clock_t begin = clock();
-	Physicc2D::Generator<Physicc2D::BoundingVolume::OBB> gen(800);
-	gen.Generate("OBB");
-	gen.ShowCollisions();
+	std::cout << gen.ShowCollisions();
 	//TODO : Implement a randomized OBB generator by using rand() and srand() (done above)
 	clock_t end = clock();
+	//std::cout << gen.returnCollisions() << std::endl;
 	std::cout << "Execution time: " << (double)(end - begin)/CLOCKS_PER_SEC << 's' << std::endl;
 	return 0;
 	//bv1.SetBV(rec1);

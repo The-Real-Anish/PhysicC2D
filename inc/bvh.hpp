@@ -33,6 +33,9 @@ namespace Physicc2D{
             head = std::make_shared<BVHNode>;
         }
         
+        std::shared_ptr<BVHNode<T>> returnHead(){
+            return head;
+        }
         //makes a binary tree of BVs
         inline void buildTree(){
 			buildTree(head, 0, rigidBodyList.size() - 1);

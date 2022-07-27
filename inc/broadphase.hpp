@@ -3,7 +3,6 @@
 
 #include "rigidbody.hpp"
 #include "bvh.hpp"
-#include "core/assert.hpp"
 #include <memory>
 
 namespace Physicc2D{
@@ -18,10 +17,10 @@ namespace Physicc2D{
 		{}
 
 		std::weak_ptr<RigidBody> rb1, rb2;
-        }
+        };
 
-        
-
+        template<typename T>
+        std::vector<potentialContact> getPotentialContacts(BVHNode<T>* node);
     }
 }
 
