@@ -3,8 +3,9 @@
 
 #include "bv.hpp"
 #include "rigidbody.hpp"
-#include <iterator>
+#include <cstring>
 #include <vector>
+
 #include <memory>
 
 namespace Physicc2D{
@@ -31,7 +32,7 @@ namespace Physicc2D{
         void buildTree(std::shared_ptr<BVHNode<T>> node, std::size_t start, std::size_t end);
         
         public:
-        
+
         BVH(std::vector<Physicc2D::RigidBody> rb_list) : rigidBodyList(rb_list){
             head = std::make_shared<BVHNode<T>>();
         }

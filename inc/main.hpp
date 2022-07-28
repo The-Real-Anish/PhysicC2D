@@ -71,7 +71,7 @@ namespace Physicc2D{
             delete rbList;
         }
         int ShowCollisions(){
-            std::vector<Physicc2D::BroadPhase::potentialContact> collidingBodies =
+            std::vector<BroadPhase::potentialContact> collidingBodies =
             Physicc2D::BroadPhase::getPotentialContacts<T>(bvh->returnHead());
             return collidingBodies.size();
             /*new int a = 0;
