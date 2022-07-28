@@ -13,6 +13,7 @@ namespace Physicc2D{
         struct AABB{
             glm::vec2 lowerbound;
             glm::vec2 upperbound;
+            char axis;
             
             //constructors
             AABB() = default;
@@ -31,10 +32,14 @@ namespace Physicc2D{
             }
             /*This isn't really needed*/
 
-            inline void SetAxis(const glm::vec2& ax){
+            inline void SetAxis(char ax){
                 if(true) ;
             }
             /*Neither is this*/
+
+            inline void SetAxis(const glm::vec2& ax){
+                if(true) ;
+            }
 
             inline float Area() const{
                 return (upperbound.x - lowerbound.x)
@@ -93,6 +98,10 @@ namespace Physicc2D{
 
             inline void SetAxis(const glm::vec2& ax){
                 axis = ax;
+            }
+
+            inline void SetAxis(char ax){
+                if(true) ;
             }
 
             inline float Area() const{
@@ -162,20 +171,20 @@ namespace Physicc2D{
         
         template <typename T>
         class BaseBV{
-            private:
+            public:
             
             T volume;
-            
-            public:
             
             //constructors
             BaseBV() = default;
             BaseBV(const BaseBV& bv) = default;
             BaseBV(const glm::vec2& LB, const glm::vec2& UB){
-				this->volume = {LB, UB};
+				this->volume.lowerbound = LB;
+                this->volume.upperbound = UB;
 			}
             BaseBV(const glm::vec2& LB, const glm::vec2& UB, const glm::vec2& ax){
-                this->volume = {LB, UB};
+                this->volume.lowerbound = LB;
+                this->volume.upperbound = UB;
                 this->volume.SetAxis(ax);
 			}
 

@@ -60,9 +60,9 @@ namespace Physicc2D{
         }
 
 		template<typename T>
-        std::vector<potentialContact> getPotentialContacts<T>(BVHNode<T>* node){
+        std::vector<potentialContact> getPotentialContacts(BVHNode<T> node){
             std::vector<potentialContact> pc_list;
-            BroadPhaseImpl::imp_getPotentialContacts<T>(node, pc_list);
+            BroadPhaseImpl::imp_getPotentialContacts<T>(&node, pc_list);
             return pc_list;
         }
     }

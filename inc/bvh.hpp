@@ -3,7 +3,8 @@
 
 #include "bv.hpp"
 #include "rigidbody.hpp"
-#include "vector"
+#include <iterator>
+#include <vector>
 #include <memory>
 
 namespace Physicc2D{
@@ -28,13 +29,15 @@ namespace Physicc2D{
         void sort(glm::vec2& axis, std::size_t start, std::size_t end);
         glm::vec2 cuttingAxis(std::size_t start, std::size_t end);
         void buildTree(std::shared_ptr<BVHNode<T>> node, std::size_t start, std::size_t end);
+        
         public:
-        BVH(std::vector<RigidBody> rb_list) : rigidBodyList(rb_list){
-            head = std::make_shared<BVHNode>;
+        
+        BVH(std::vector<Physicc2D::RigidBody> rb_list) : rigidBodyList(rb_list){
+            head = std::make_shared<BVHNode<T>>();
         }
         
-        std::shared_ptr<BVHNode<T>> returnHead(){
-            return head;
+        BVHNode<T> returnHead(){
+            return *head;
         }
         //makes a binary tree of BVs
         inline void buildTree(){

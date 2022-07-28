@@ -22,6 +22,7 @@ namespace Physicc2D{
         public:
 			RigidBody(float mass, const glm::vec2& velocity, float gravityScale);
 			RigidBody(const RigidBody& other) = default;
+			RigidBody(){}
 
 			[[nodiscard]] inline glm::vec2 getCentroid() const{
 				return glm::vec2((enclosingAABB.upperbound.x + enclosingAABB.lowerbound.x)/2.0,
@@ -63,9 +64,12 @@ namespace Physicc2D{
 			}
 
 			template<typename T>
-			inline void setBV(BoundingVolume::BaseBV<T>& bv){
-				if(std::is_same<T, BoundingVolume::AABB>::value) enclosingAABB.Set(bv.volume.lb, bv.volume.ub);
-				else enclosingOBB.Set(bv.volume.lb, bv.volume.ub, bv.volume.axis);
+			inline void setBV(BoundingVolume::BaseBV<T> *bv){
+				if(std::is_same<T, BoundingVolume::AABB>::value) enclosingAABB.Set(bv->volume.lowerbound, bv->volume.upperbound);
+				else{
+					enclosingOBB.Set(bv->volume.lowerbound, bv->volume.upperbound);
+					enclosingOBB.SetAxis(bv->volume.axis);
+				}
 			}
 
     };

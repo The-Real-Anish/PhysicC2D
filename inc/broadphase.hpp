@@ -9,18 +9,19 @@ namespace Physicc2D{
 
     namespace BroadPhase{
 
-        struct potentialContact{
-
-            //Will store a pair of rigidbodies that may be colliding
-
+        class potentialContact{
+        //Will store a pair of rigidbodies that may be colliding
+        public:
         potentialContact(std::weak_ptr<RigidBody> body1, std::weak_ptr<RigidBody> body2): rb1(body1), rb2(body2)
 		{}
+
+        potentialContact(){}
 
 		std::weak_ptr<RigidBody> rb1, rb2;
         };
 
         template<typename T>
-        std::vector<potentialContact> getPotentialContacts(BVHNode<T>* node);
+        std::vector<potentialContact> getPotentialContacts(BVHNode<T> node);
     }
 }
 

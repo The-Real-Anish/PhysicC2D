@@ -1,7 +1,6 @@
 #ifndef __MAIN_H__
 #define __MAIN_H__
 
-#include "bv.hpp"
 #include "broadphase.hpp"
 #include<iostream>
 #include<string>
@@ -20,9 +19,9 @@ namespace Physicc2D{
         //Physicc2D::BoundingVolume::OBB rec1(a, b, o1), rec2(c, d, o2);
         //Physicc2D::BoundingVolume::BaseBV<T> bv[MAX];
         //Physicc2D::BVH<T>* bvh = NULL;
+        Physicc2D::BVH<T> *bvh;
 
         public:
-        bool is_aabb = std::is_same<T, BoundingVolume::AABB>::value;
 
         Generator(int n1){
             n = n1;
@@ -51,27 +50,29 @@ namespace Physicc2D{
                     //bv[i].SetBV(lb[i], ub[i], ax[i]);
                     bv->Correct();
                     Physicc2D::RigidBody *rb = new Physicc2D::RigidBody;
-                    rb->setBV<T>(*bv);
+                    rb->setBV<T>(bv);
                     rbList->push_back(*rb);
+                    delete bv;
                 }
                 else if(s.compare("AABB")){
                     Physicc2D::BoundingVolume::BaseBV<T> *bv = new Physicc2D::BoundingVolume::BaseBV<T>(*lb, *ub);
                     //bv[i].SetBV(lb[i], ub[i]);
                     bv->Correct();
                     Physicc2D::RigidBody *rb = new Physicc2D::RigidBody;
-                    rb->setBV<T>(*bv);
+                    rb->setBV<T>(bv);
                     rbList->push_back(*rb);
+                    delete bv;
                 }
-                delete bv;
                 delete lb, ub, axis;
             }
-            Physicc2D::BVH<T> *bvh = new Physicc2D::BVH<T>(rbList);
+            Physicc2D::BVH<T> *newbvh = new Physicc2D::BVH<T>(*rbList);
+            bvh = newbvh;
             bvh->buildTree();
             delete rbList;
         }
         int ShowCollisions(){
             std::vector<Physicc2D::BroadPhase::potentialContact> collidingBodies =
-            Physicc2D::BroadPhase::getPotentialContacts(bvh->returnHead);
+            Physicc2D::BroadPhase::getPotentialContacts<T>(bvh->returnHead());
             return collidingBodies.size();
             /*new int a = 0;
             for(int i = 0; i < n; i++){
