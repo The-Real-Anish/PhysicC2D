@@ -5,7 +5,6 @@
 #include "rigidbody.hpp"
 #include <cstring>
 #include <vector>
-
 #include <memory>
 
 namespace Physicc2D{
@@ -24,14 +23,16 @@ namespace Physicc2D{
     class BVH{
 
         private:
-        std::shared_ptr<BVHNode<T>> head;
-        std::vector<RigidBody> rigidBodyList;
+        
         T computeBV(std::size_t start, std::size_t end);
         void sort(glm::vec2& axis, std::size_t start, std::size_t end);
         glm::vec2 cuttingAxis(std::size_t start, std::size_t end);
         void buildTree(std::shared_ptr<BVHNode<T>> node, std::size_t start, std::size_t end);
         
         public:
+
+        std::shared_ptr<BVHNode<T>> head;
+        std::vector<RigidBody> rigidBodyList;
 
         BVH(std::vector<Physicc2D::RigidBody> rb_list) : rigidBodyList(rb_list){
             head = std::make_shared<BVHNode<T>>();
@@ -41,9 +42,7 @@ namespace Physicc2D{
             return *head;
         }
         //makes a binary tree of BVs
-        inline void buildTree(){
-			buildTree(head, 0, rigidBodyList.size() - 1);
-		}
+        void buildTree();
 
         //adds the elements to a vector, converting the tree
         //to a linear data structure

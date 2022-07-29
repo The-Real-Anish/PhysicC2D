@@ -139,6 +139,11 @@ namespace Physicc2D{
     }
 
     template<typename T>
+    void  BVH<T>::buildTree(){
+		buildTree(head, 0, rigidBodyList.size() - 1);
+	}
+
+    template<typename T>
     std::vector<std::weak_ptr<RigidBody>> BVH<T>::convert()
 	{
 		std::stack<BVHNode<T>*> s;

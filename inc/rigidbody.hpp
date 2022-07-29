@@ -2,7 +2,8 @@
 #define __RIGIDBODY_H__
 
 #include "glm/glm.hpp"
-#include<bv.hpp>
+#include "bv.hpp"
+#include <memory>
 namespace Physicc2D{
     
     //similar to 3D. this class describes the properties of a rigidbody

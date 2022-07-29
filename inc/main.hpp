@@ -1,9 +1,12 @@
 #ifndef __MAIN_H__
 #define __MAIN_H__
 
+#include "bvh.hpp"
 #include "broadphase.hpp"
 #include<iostream>
+#include<vector>
 #include<string>
+#include<cstring>
 
 const int MAX = 1000;
 
@@ -71,7 +74,7 @@ namespace Physicc2D{
             delete rbList;
         }
         int ShowCollisions(){
-            std::vector<BroadPhase::potentialContact> collidingBodies =
+            std::vector<Physicc2D::BroadPhase::potentialContact> collidingBodies =
             Physicc2D::BroadPhase::getPotentialContacts<T>(bvh->returnHead());
             return collidingBodies.size();
             /*new int a = 0;
