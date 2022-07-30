@@ -8,8 +8,6 @@
 #include<string>
 #include<cstring>
 
-const int MAX = 1000;
-
 namespace Physicc2D{
     template<typename T>
     class Generator{
@@ -25,12 +23,12 @@ namespace Physicc2D{
         Physicc2D::BVH<T> *bvh;
 
         public:
-
         Generator(int n1){
             n = n1;
         };
 
-        void Generate(std::string s){
+        void Generate(std::string s);
+        /*void Generate(std::string s){
             srand (static_cast <unsigned> (time(0)));
             std::vector<Physicc2D::RigidBody> list;
             std::vector<Physicc2D::RigidBody> *rbList = new std::vector<Physicc2D::RigidBody>;
@@ -72,8 +70,9 @@ namespace Physicc2D{
             bvh = newbvh;
             bvh->buildTree();
             delete rbList;
-        }
-        int ShowCollisions(){
+        }*/
+        int ShowCollisions();
+        /*int ShowCollisions(){
             std::vector<Physicc2D::BroadPhase::potentialContact> collidingBodies =
             Physicc2D::BroadPhase::getPotentialContacts<T>(bvh->returnHead());
             return collidingBodies.size();
@@ -89,9 +88,9 @@ namespace Physicc2D{
                 if(bv[i].OverlapsWith(bv[j])){
                     a++;
                 } std::cout << "They overlap! :)" << std::endl;
-                else std::cout << "They don't overlap :(" << std::endl;*/
+                else std::cout << "They don't overlap :(" << std::endl;
             //}
-        }
+        }*/
 
         //int returnCollisions(){
           //  return a/2;

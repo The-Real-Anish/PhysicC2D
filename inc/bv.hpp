@@ -9,7 +9,26 @@
 namespace Physicc2D{
     
     namespace BoundingVolume{
-        
+
+        /*struct AABB{
+            glm::vec2 lowerbound;
+            glm::vec2 upperbound;
+            char axis;
+            
+            //constructors
+            AABB();
+            AABB(const AABB& aabb);
+            AABB(glm::vec2 LB, glm::vec2 UB);
+            
+            //functions
+            inline void operator = (Physicc2D::BoundingVolume::AABB const& aabb);
+            inline void operator = (Physicc2D::BoundingVolume::OBB const& obb);
+            inline void Set(glm::vec2& LB, glm::vec2& UB);
+            inline void Set(glm::vec2& LB, glm::vec2& UB, glm::vec2& ax);
+            inline void SetAxis(char ax);
+            inline void SetAxis(const glm::vec2& ax);
+            inline float Area() const;
+        };*/
         struct AABB{
             glm::vec2 lowerbound;
             glm::vec2 upperbound;
@@ -19,8 +38,19 @@ namespace Physicc2D{
             AABB() = default;
             AABB(const AABB& aabb) = default;
             AABB(glm::vec2 LB, glm::vec2 UB) : lowerbound(LB), upperbound(UB) {};
-            
+            AABB(glm::vec2 LB, glm::vec2 UB, glm::vec2 ax) : lowerbound(LB), upperbound(UB) {};
+        
             //functions
+            inline void operator = (Physicc2D::BoundingVolume::AABB const& aabb){
+                lowerbound = aabb.lowerbound;
+                upperbound = aabb.upperbound;
+            }
+
+            /*inline void operator = (Physicc2D::BoundingVolume::OBB const& obb){
+                lowerbound = obb.lowerbound;
+                upperbound = obb.upperbound;
+            }*/
+
             inline void Set(glm::vec2& LB, glm::vec2& UB){
                 lowerbound = LB;
                 upperbound = UB;
@@ -76,6 +106,16 @@ namespace Physicc2D{
             //constructors
             OBB() = default;
             OBB(const OBB& obb) = default;
+            OBB(glm::vec2& LB, glm::vec2& UB) : lowerbound(LB), upperbound(UB){
+                if(upperbound.x - lowerbound.x > upperbound.y - lowerbound.y){
+                    glm::vec2 Y(0.f, 1.f);
+                    axis = Y;
+                }
+                else{
+                    glm::vec2 X(1.f, 0.f);
+                    axis = X;
+                }
+            }
             OBB(glm::vec2& LB, glm::vec2& UB, glm::vec2& ax)
                //bool AABB)
              : lowerbound(LB), upperbound(UB), axis(ax)
@@ -83,6 +123,19 @@ namespace Physicc2D{
                {};
             
             //functions
+
+            /*inline void operator = (Physicc2D::BoundingVolume::AABB aabb){
+                lowerbound = aabb.lowerbound;
+                upperbound = aabb.upperbound;
+                if(upperbound.x - lowerbound.x > upperbound.y - lowerbound.y){
+                    glm::vec2 Y(0.f, 1.f);
+                    axis = Y;
+                }
+                else{
+                    glm::vec2 X(1.f, 0.f);
+                    axis = X;
+                }
+            }*/
             inline void Set(glm::vec2& LB, glm::vec2& UB, glm::vec2& ax){
                 lowerbound = LB;
                 upperbound = UB;

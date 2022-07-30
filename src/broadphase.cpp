@@ -1,4 +1,4 @@
-#include "broadphase.hpp"
+/*
 
 namespace Physicc2D{
     
@@ -29,11 +29,11 @@ namespace Physicc2D{
                 else if (isLeaf(node1) && !isLeaf(node2)){
 					//If only of the nodes is a leaf, then make sure that node2 is the leaf node and that we recurse through node1
 					getPotentialContactsWith(node2, node1, collisionArray);
-                    /*TODO: Find out if just copying similar code to the 2nd case above, for this 3rd case,
-                    will give a faster or slower performance*/
+                    //TODO: Find out if just copying similar code to the 2nd case above, for this 3rd case,
+                    //will give a faster or slower performance
 				}
                 else{
-					/** Both nodes are non-leaf nodes */
+					// Both nodes are non-leaf nodes 
 
 					//Recurse through node1, with node2 constant.
 					getPotentialContactsWith(node1->left.get(), node2, collisionArray);
@@ -66,4 +66,4 @@ namespace Physicc2D{
             return pc_list;
         }
     }
-}
+}*/

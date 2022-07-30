@@ -1,9 +1,8 @@
-#include "bvh.hpp"
+/*#include "bvh.hpp"
 #include <utility>
 #include <algorithm>
 #include <stack>
 #include <memory>
-
 namespace Physicc2D{
     template <typename T>
     T BVH<T>::computeBV(std::size_t start, std::size_t end){
@@ -139,11 +138,6 @@ namespace Physicc2D{
     }
 
     template<typename T>
-    void  BVH<T>::buildTree(){
-		buildTree(head, 0, rigidBodyList.size() - 1);
-	}
-
-    template<typename T>
     std::vector<std::weak_ptr<RigidBody>> BVH<T>::convert()
 	{
 		std::stack<BVHNode<T>*> s;
@@ -169,4 +163,4 @@ namespace Physicc2D{
 		}
 		return tree;
 	}
-}
+}*/
