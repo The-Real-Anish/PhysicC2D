@@ -73,7 +73,8 @@ namespace Physicc2D{
                                      + (p_axis * glm::dot(p_axis,
                                                  glm::vec2(rigidBodyList[other_l].getAABB().upperbound.x, rigidBodyList[other_l].getAABB().lowerbound.y) - center));
             
-            return o_bv;
+            T O_bv(o_bv.lowerbound, o_bv.upperbound, o_bv.axis);
+            return O_bv;
         }
         else{
             T a_bv(bv.lowerbound, bv.upperbound);
@@ -135,10 +136,12 @@ namespace Physicc2D{
             node->volume.upperbound = rigidBodyList[start].getAABB().upperbound;
             node->volume.lowerbound = rigidBodyList[start].getAABB().lowerbound;
             node->body = std::make_shared<RigidBody>(rigidBodyList[start]);
+            node->left = nullptr;
+            node->right = nullptr;
         }
         else{
        
-        node->volume = BVH<T>::computeBV(start, end);
+        node->volume = computeBV(start, end);
         
         sort(cuttingAxis(start, end), start, end);
 

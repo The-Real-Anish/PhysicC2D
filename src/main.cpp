@@ -1,14 +1,9 @@
 #include "main.hpp"
 #include<iostream>
-#include<cstdlib>
-#include<ctime>
-#include<cmath>
-#include<time.h>
 
-template<typename T>
-void Physicc2D::Generator<T>::Generate(std::string s){
-            srand (static_cast <unsigned> (time(0)));
-            std::vector<Physicc2D::RigidBody> list;
+/*template<typename T>
+inline void Physicc2D::Generator<T>::Generate(std::string s){
+            srand (time(0));
             std::vector<Physicc2D::RigidBody> *rbList = new std::vector<Physicc2D::RigidBody>;
             for(int i = 0; i < n; i++){
                 glm::vec2* lb = new glm::vec2;
@@ -17,11 +12,12 @@ void Physicc2D::Generator<T>::Generate(std::string s){
                 lb->x = -100 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(200)));
                 lb->y = -100 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(200)));
                 ub->x = -100 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(200)));
-                ub->y = -100 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(200)));
+                ub->y = lb->y + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(100)));
                 if(s.compare("OBB")){
-                    while(ub->y <= lb->y){
-                        lb->y = -100 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(200)));
-                        ub->y = -100 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(200)));
+                    if(ub->y <= lb->y){
+                        lb->y = lb->y + ub->y;
+                        ub->y = lb->y - ub->y;
+                        lb->y = lb->y - ub->y;
                     }
                     axis->x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
                     axis->y = sqrt(1 - axis->x*axis->x);
@@ -30,8 +26,8 @@ void Physicc2D::Generator<T>::Generate(std::string s){
                     bv->Correct();
                     Physicc2D::RigidBody *rb = new Physicc2D::RigidBody;
                     rb->setBV<T>(bv);
-                    rbList->push_back(*rb);
                     delete bv;
+                    rbList->push_back(*rb);
                 }
                 else if(s.compare("AABB")){
                     Physicc2D::BoundingVolume::BaseBV<T> *bv = new Physicc2D::BoundingVolume::BaseBV<T>(*lb, *ub);
@@ -39,8 +35,8 @@ void Physicc2D::Generator<T>::Generate(std::string s){
                     bv->Correct();
                     Physicc2D::RigidBody *rb = new Physicc2D::RigidBody;
                     rb->setBV<T>(bv);
-                    rbList->push_back(*rb);
                     delete bv;
+                    rbList->push_back(*rb);
                 }
                 delete lb, ub, axis;
             }
@@ -49,24 +45,28 @@ void Physicc2D::Generator<T>::Generate(std::string s){
             bvh->buildmyTree();
 			rbList->clear();
             delete rbList;
-        }
-
+        }*/
+/*
 template<typename T>
 int Physicc2D::Generator<T>::ShowCollisions(){
 		std::vector<Physicc2D::BroadPhase::potentialContact> collidingBodies =
         Physicc2D::BroadPhase::getPotentialContacts<T>(bvh->returnHead());
         return collidingBodies.size();
 	}
-
+*/
 int main(){
 	Physicc2D::Generator<Physicc2D::BoundingVolume::OBB> gen(1000);
 	gen.Generate("OBB");
-	clock_t begin = clock();
+	clock_t begin1 = clock();
 	std::cout << gen.ShowCollisions() << std::endl;
 	//TODO : Implement a randomized OBB generator by using rand() and srand() (done above)
-	clock_t end = clock();
+	clock_t end1 = clock();
 	//std::cout << gen.returnCollisions() << std::endl;
-	std::cout << "Execution time: " << (double)(end - begin)/CLOCKS_PER_SEC << 's' << std::endl;
+	std::cout << "BVH Execution time: " << (double)(end1 - begin1)/CLOCKS_PER_SEC << 's' << std::endl;
+    /*clock_t begin2 = clock();
+    std::cout << gen.BruteForce() << std::endl;
+    clock_t end2 = clock();
+    std::cout << "Brute Force Execution time: " << (double)(end2 - begin2)/CLOCKS_PER_SEC << 's' << std::endl;*/
 	return 0;
 	//bv1.SetBV(rec1);
 	//bv2.SetBV(rec2);

@@ -106,16 +106,16 @@ namespace Physicc2D{
             //constructors
             OBB() = default;
             OBB(const OBB& obb) = default;
-            OBB(glm::vec2& LB, glm::vec2& UB) : lowerbound(LB), upperbound(UB){
-                if(upperbound.x - lowerbound.x > upperbound.y - lowerbound.y){
+            OBB(glm::vec2& LB, glm::vec2& UB) : lowerbound(LB), upperbound(UB){}
+                /*if(upperbound.x - lowerbound.x > upperbound.y - lowerbound.y){
                     glm::vec2 Y(0.f, 1.f);
                     axis = Y;
                 }
                 else{
                     glm::vec2 X(1.f, 0.f);
                     axis = X;
-                }
-            }
+                }*/
+            
             OBB(glm::vec2& LB, glm::vec2& UB, glm::vec2& ax)
                //bool AABB)
              : lowerbound(LB), upperbound(UB), axis(ax)
@@ -165,7 +165,7 @@ namespace Physicc2D{
                                                         0)));
             }
 
-            inline bool Overlaps(OBB& obb){
+            inline bool Overlaps(OBB obb){
                 const glm::vec2 X(1.f,0.f), Y(0.f, 1.f);
                 return 
                 //first checks whether the vertices of the passed obb lie inside our obb(this)

@@ -54,8 +54,8 @@ namespace Physicc2D{
 					getPotentialContactsWith(node1->right.get(), node2, collisionArray);
 
 					//Recurse through node2, with node1 constant.
-					getPotentialContactsWith(node1, node2->left.get(), collisionArray);
-					getPotentialContactsWith(node1, node2->right.get(), collisionArray);
+					//getPotentialContactsWith(node1, node2->left.get(), collisionArray);
+					//getPotentialContactsWith(node1, node2->right.get(), collisionArray);
 				}
 			}
 
@@ -67,9 +67,9 @@ namespace Physicc2D{
 				imp_getPotentialContacts(node->left.get(), collisionArray);
 				imp_getPotentialContacts(node->right.get(), collisionArray);
 
-				if ((node->left)->volume.Overlaps((node->right)->volume)){
+				//if ((node->left)->volume.Overlaps((node->right)->volume)){
 					getPotentialContactsWith(node->left.get(), node->right.get(), collisionArray);
-				}
+				//}
 			}
         }
 
